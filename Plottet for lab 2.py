@@ -1,10 +1,17 @@
+# -*- coding: utf-8 -*-
+"""
+Created on Thu Sep 26 12:43:47 2019
+
+@author: Administrator
+"""
+
 import matplotlib.pyplot as plt
 import numpy as np
 from scipy.stats import linregress   # for linear regression
 from scipy.optimize import fsolve # to fit function to data
 from math import exp
 
-W_al= 5.896      #Vekt til metallbit
+W_al= 5.906       #Vekt til metallbit
 T_0 = 23.9 + 273.15        #Romtemperatur
 T_f=77              #Temperatur Nitrogen
 W_kopper= 3.232 #Vekt isoporkopper
@@ -31,11 +38,7 @@ W_tot = [103.8, 100.58, 97.81, 95.07, 92.41, 89.83, 89.13, 86.41, 83.93, 81.52, 
 W_før = W_tot[0:6]
 W_etter = W_tot[6:]
 
-#Endrer t_Etter med et helt sekund
-#t_etter = t_etter - 1/60
-
 W_etter = np.array(W_etter) - W_al
-
 
 #FUNKSJON FØR
 
@@ -45,6 +48,7 @@ a_før = LinReg_før[0]
 b_før = LinReg_før[1]
 
 plt.figure()
+plt.title('Mass as a function of time')
 t_før_plot = np.linspace(0,t_etter[0])
 plt.plot(t_før, W_før, 'xk', Label='Measurement')
 
@@ -71,15 +75,16 @@ plt.vlines(5*60, 60, 110, colors = "g", linestyle = "--", label = "t_1")
 plt.vlines(354, 60, 110, colors = "y", linestyle = "--", label = "t_2")
 
 plt.xlabel("Time, t [s]")
-plt.ylabel("Mass, m [g]")
+plt.ylabel("Extensive mass, m [g]")
 
 plt.ylim(60, 110)
 
 plt.xticks(ticks = list(range(0,900,120)), fontsize = 11)
 plt.yticks(fontsize = 11)
 
-plt.savefig('maaledata_reg_eksperiment.png', bbox_inches='tight')
+
 plt.legend()
+plt.savefig('maaledata_reg_eksperiment6.png', bbox_inches='tight')
 plt.show()
 
 delta_m_1 = abs((a_etter*5*60+b_etter)-(a_før*5*60+b_før))
@@ -110,4 +115,3 @@ delta_theta_E = np.sqrt((294.24-287.52)**2 + ((316.19-265.35)*m_usikkerhet)**2)
 print('Delta Theta E=', delta_theta_E)
 print('Sensitivitet T_0=', 294.24-287.52)
 print('Sensitivitet Delta m=', 316.19-265.35)
-
